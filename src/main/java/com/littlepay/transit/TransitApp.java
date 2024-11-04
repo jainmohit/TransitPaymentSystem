@@ -8,9 +8,6 @@ import com.littlepay.transit.utils.CsvWriter;
 
 import java.util.List;
 
-/**
- * Main method for reading and writing the trips to a csv file
- */
 public class TransitApp
 {
     public static void main( String[] args )

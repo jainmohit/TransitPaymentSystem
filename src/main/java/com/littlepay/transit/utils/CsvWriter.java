@@ -8,8 +8,6 @@ import java.util.List;
 
 public class CsvWriter {
 
-    private static final String NEW_LINE_CHARACTER = "\n";
-
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     public void writeTrips(List<Trip> trips, String fileName) {

@@ -19,7 +19,6 @@ public class FareCalculatorTest {
     }
 
     @Test
-
     void testCalculateFareForNonTapOFFRoute() {
         assertEquals(7.30, FareCalculator.getMaxFare("Stop1"));
         assertEquals(5.50, FareCalculator.getMaxFare("Stop2"));

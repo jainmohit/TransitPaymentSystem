@@ -18,7 +18,7 @@ public class Trip {
     private Trip (TripBuilder tripBuilder) {
         this.startTime = tripBuilder.startTime;
         this.endTime = tripBuilder.endTime;
-        this.duration = tripBuilder.duration;
+        this.duration = tripBuilder.durationSecs;
         this.fromStopId = tripBuilder.fromStopId;
         this.toStopId = tripBuilder.toStopId;
         this.chargeAmount = tripBuilder.chargeAmount;
@@ -71,7 +71,7 @@ public class Trip {
     public static class TripBuilder {
         private LocalDateTime startTime;
         private LocalDateTime endTime;
-        private Long duration;
+        private Long durationSecs;
         private String fromStopId;
         private String toStopId;
         private Double chargeAmount;
@@ -80,52 +80,52 @@ public class Trip {
         private String panId;
         private TripStatus status;
 
-        public TripBuilder setStartTime(LocalDateTime startTime) {
+        public TripBuilder startTime(LocalDateTime startTime) {
             this.startTime = startTime;
             return this;
         }
 
-        public TripBuilder setEndTime(LocalDateTime endTime) {
+        public TripBuilder endTime(LocalDateTime endTime) {
             this.endTime = endTime;
             return this;
         }
 
-        public TripBuilder setDuration(Long duration) {
-            this.duration = duration;
+        public TripBuilder durationSecs(Long durationSecs) {
+            this.durationSecs = durationSecs;
             return this;
         }
 
-        public TripBuilder setFromStopId(String fromStopId) {
+        public TripBuilder fromStopId(String fromStopId) {
             this.fromStopId = fromStopId;
             return this;
         }
 
-        public TripBuilder setToStopId(String toStopId) {
+        public TripBuilder toStopId(String toStopId) {
             this.toStopId = toStopId;
             return this;
         }
 
-        public TripBuilder setChargeAmount(Double chargeAmount) {
+        public TripBuilder chargeAmount(Double chargeAmount) {
             this.chargeAmount = chargeAmount;
             return this;
         }
 
-        public TripBuilder setCompanyId(String companyId) {
+        public TripBuilder companyId(String companyId) {
             this.companyId = companyId;
             return this;
         }
 
-        public TripBuilder setBusId(String busId) {
+        public TripBuilder busId(String busId) {
             this.busId = busId;
             return this;
         }
 
-        public TripBuilder setPanId(String panId) {
+        public TripBuilder panId(String panId) {
             this.panId = panId;
             return this;
         }
 
-        public TripBuilder setStatus(TripStatus status) {
+        public TripBuilder status(TripStatus status) {
             this.status = status;
             return this;
         }
