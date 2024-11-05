@@ -15,7 +15,50 @@ import java.util.stream.Collectors;
 public class TripProcessor {
     private static final Logger log = LoggerFactory.getLogger(TripProcessor.class);
 
-    // TODO: 5/11/2024 Improve the method to be more readable and modular
+
+    private List<Trip> processTapEventsForPanId(List<TapEvents> panIdTaps){
+        List<Trip> trips = new ArrayList<>();
+        TapEvents previousTap = null;
+
+        for (TapEvents currentTap: panIdTaps) {
+            if ((TapType.ON).equals(currentTap.getTapType())){
+               TapEvents matchingTapOff = findMatchingTapOff(panIdTaps, panIdTaps.indexOf(currentTap) + 1);
+               trips.add(createTrip(currentTap, matchingTapOff));
+               if (matchingTapOff == null) {
+                   log.warn("No Matching Tap OFF found for tap id : {}", currentTap.getId());
+               }
+            } else if (previousTap == null || (TapType.OFF).equals(currentTap.getTapType())) {
+                log.warn("Ignoring the Tap as no Matching Tap ON found for tap id : {}", currentTap.getId());
+            }
+            previousTap = currentTap;
+        }
+        return trips;
+    }
+
+    private Map<String, List<TapEvents>> groupAndSortTapEvents(List<TapEvents> tapEvents){
+        return tapEvents.stream()
+                .sorted(Comparator.comparing(TapEvents::getDateTime))
+                .collect(Collectors.groupingBy(
+                        TapEvents::getPanId,
+                        LinkedHashMap::new,
+                        Collectors.toList()
+                ));
+
+    }
+
+    private TapEvents findMatchingTapOff(List<TapEvents> panIdTaps, int startIndex) {
+        return startIndex < panIdTaps.size() && (TapType.OFF).equals(panIdTaps.get(startIndex).getTapType()) ? panIdTaps.get(startIndex) : null;
+    }
+
+    // Version 2 of ProcessTrips
+    public List<Trip> processTripsV2 (List<TapEvents> tapEvents) {
+        var tapEventsByPanId = groupAndSortTapEvents(tapEvents);
+        return  tapEventsByPanId.values().stream()
+                .flatMap(panIdTaps -> processTapEventsForPanId(panIdTaps).stream())
+                .collect(Collectors.toList());
+    }
+
+    // First Version of processTrips
     public List<Trip> processTrips(List<TapEvents> tapEvents) {
         Map<String, List<TapEvents>> tapEventsByPanId = tapEvents.stream()
                 .sorted(Comparator.comparing(TapEvents::getDateTime))
@@ -44,7 +87,7 @@ public class TripProcessor {
                     }
                     trips.add(createTrip(currentTap, matchingTapOff));
                 } else {
-                    log.info("Tap ON is not present so skipping for id :" + currentTap.getId());
+                    log.info("Ignoring the Tap OFF as no previous Tap ON found for tap id :{}", currentTap.getId());
                     i++;
                 }
             }

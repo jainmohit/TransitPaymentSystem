@@ -1,0 +1,6 @@
+2024-11-06 00:41:14.030 [main] INFO  c.littlepay.transit.utils.CsvReader - Reading the input file : taps.csv
+2024-11-06 00:41:14.037 [main] INFO  c.littlepay.transit.utils.CsvReader - Reading the input file : taps.csv Done
+2024-11-06 00:41:14.043 [main] INFO  c.l.transit.service.TripProcessor - Ignoring the Tap OFF as no previous Tap ON found for tap id :1
+2024-11-06 00:41:47.932 [main] INFO  c.littlepay.transit.utils.CsvReader - Reading the input file : taps.csv
+2024-11-06 00:41:47.941 [main] INFO  c.littlepay.transit.utils.CsvReader - Reading the input file : taps.csv Done
+2024-11-06 00:41:47.947 [main] INFO  c.l.transit.service.TripProcessor - Ignoring the Tap OFF as no previous Tap ON found for tap id :1

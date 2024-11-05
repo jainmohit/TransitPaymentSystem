@@ -2,41 +2,35 @@ package com.littlepay.transit.utils;
 
 import com.littlepay.transit.model.TapEvents;
 import com.littlepay.transit.model.TapType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.time.DateTimeException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Utility class to read tap events from a CSV file.
- *
- * @author Mohit Jain
- */
 
 public class CsvReader {
     private static final String COMMA_DELIMITER = ",";
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    private static final Logger log = LoggerFactory.getLogger(CsvReader.class);
 
     public List<TapEvents> readTaps(String fileName) {
+
+        log.info("Reading the input file : {}", fileName);
+
         List<TapEvents> tapEvents = new ArrayList<>();
 
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
-        BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-
-            if(fileReader == null){
-                throw new RuntimeException("File not found in resources " + fileName);
-            }
-            //skip the headers from the csv file
-            fileReader.readLine();
+        try (BufferedReader reader = new BufferedReader(new FileReader("csvFiles/input/" + fileName))) {
+            reader.readLine();
 
             String line;
-            while ((line = fileReader.readLine()) != null) {
+            while((line = reader.readLine()) != null) {
                 String[] fields = line.split(COMMA_DELIMITER);
                 TapEvents tapEvent = new TapEvents.TapEventsBuilder()
                         .id(Long.parseLong(fields[0].trim()))
@@ -49,12 +43,10 @@ public class CsvReader {
                         .build();
                 tapEvents.add(tapEvent);
             }
-
+            log.info("Reading the input file : {} Done", fileName);
 
         } catch (IOException exception) {
-            throw new RuntimeException("Error reading the input file " + fileName, exception);
-        } catch (NumberFormatException | DateTimeParseException exception) {
-            throw new RuntimeException("Error parsing the input file " + fileName, exception);
+            throw new RuntimeException("Error reading the input file", exception);
         }
         return tapEvents;
     }

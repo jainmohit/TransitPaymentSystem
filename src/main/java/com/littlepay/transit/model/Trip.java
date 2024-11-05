@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Trip {
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
-    private final Long duration;
+    private final Long durationSecs;
     private final String fromStopId;
     private final String toStopId;
     private final Double chargeAmount;
@@ -18,7 +18,7 @@ public class Trip {
     private Trip (TripBuilder tripBuilder) {
         this.startTime = tripBuilder.startTime;
         this.endTime = tripBuilder.endTime;
-        this.duration = tripBuilder.durationSecs;
+        this.durationSecs = tripBuilder.durationSecs;
         this.fromStopId = tripBuilder.fromStopId;
         this.toStopId = tripBuilder.toStopId;
         this.chargeAmount = tripBuilder.chargeAmount;
@@ -40,8 +40,8 @@ public class Trip {
         return companyId;
     }
 
-    public Long getDuration() {
-        return duration;
+    public Long getDurationSecs() {
+        return durationSecs;
     }
 
     public LocalDateTime getEndTime() {
